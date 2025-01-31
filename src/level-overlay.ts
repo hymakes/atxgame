@@ -2,6 +2,30 @@ import * as ex from 'excalibur'
 import { Resources } from './resources'
 import { tacoCounter } from './taco-counter'
 
+
+export const dialogBox = new ex.Actor({
+  pos: ex.vec(400, 500),
+  width: 600,
+  height: 100,
+  color: ex.Color.Black,
+  z: 10000,
+  visible: false
+});
+
+export const dialogText = new ex.Label({
+  text: 'Hello World!',
+  pos: ex.vec(0, 0),
+  font: new ex.Font({ size: 20, color: ex.Color.White }),
+  visible: false
+});
+
+dialogBox.graphics.use(new ex.Rectangle({
+  width: 600,
+  height: 100,
+  color: ex.Color.Black,
+}));
+dialogBox.addChild(dialogText);
+
 export class LevelOverlay extends ex.ScreenElement {
   private tacoCounter!: TacoCounter
 
@@ -16,9 +40,11 @@ export class LevelOverlay extends ex.ScreenElement {
   onInitialize(engine: ex.Engine<any>): void {
     this.tacoCounter = new TacoCounter({ z: this.z })
 
+
     this.tacoCounter.pos = ex.vec(16, 16)
 
     this.addChild(this.tacoCounter)
+    //this.addChild(dialogBox);
     this.pos = ex.vec(this.viewport.left, this.viewport.top)
   }
 

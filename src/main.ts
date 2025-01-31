@@ -46,5 +46,5 @@ counterLabel.z = 100;
 game.add(counterLabel);
 
 game.start(loader).then(() => {
-  game.goToScene('level1');
+  game.goToScene('level2');
 });

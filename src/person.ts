@@ -1,25 +1,22 @@
 import * as ex from 'excalibur';
 import { Resources } from './resources';
 import { Config } from './config';
-import { incrementTacoCounter } from './taco-counter';
 
-export class Player extends ex.Actor {
-  public tacos: number = 0;
-  public nearNPC: boolean = false;
-
+export class Person extends ex.Actor {
   constructor(pos: ex.Vector) {
       super({
           pos,
           width: 16,
           height: 16,
-          collisionType: ex.CollisionType.Active
+          collisionType: ex.CollisionType.Fixed,
+          name: "Person"
       })
+    this.addTag("alright");
   }
 
   onInitialize(engine: ex.Engine): void {
-    this.tacos = 0;
     const playerSpriteSheet = ex.SpriteSheet.fromImageSource({
-        image: Resources.HeroSpriteSheetPng as ex.ImageSource,
+        image: Resources.PersonSpriteSheetPng as ex.ImageSource,
         grid: {
             spriteWidth: 16,
             spriteHeight: 16,
@@ -99,49 +96,5 @@ export class Player extends ex.Actor {
     this.vel = ex.Vector.Zero;
 
     this.graphics.use('down-idle');
-    if (engine.input.keyboard.isHeld(ex.Keys.ArrowRight)) {
-      this.vel = ex.vec(Config.PlayerSpeed, 0);
-      this.graphics.use('right-walk');
-    }
-
-    if (engine.input.keyboard.isHeld(ex.Keys.ArrowLeft)) {
-      this.vel = ex.vec(-Config.PlayerSpeed, 0);
-      this.graphics.use('left-walk');
-    }
-
-    if (engine.input.keyboard.isHeld(ex.Keys.ArrowUp)) {
-      this.vel = ex.vec(0, -Config.PlayerSpeed);
-      this.graphics.use('up-walk');
-    }
-
-    if (engine.input.keyboard.isHeld(ex.Keys.ArrowDown)) {
-      this.vel = ex.vec(0, Config.PlayerSpeed);
-      this.graphics.use('down-walk');
-    }
-
-    if (engine.input.keyboard.wasPressed(ex.Keys.Space) && this.nearNPC) {
-      window.alert("alright, alright, alright");
-    }
-
-    ex.Debug.drawRay(new ex.Ray(this.pos, this.vel), { distance: 100, color: ex.Color.Red });
-  }
-
-  onPostUpdate(engine: ex.Engine, elapsed: number): void {
-    if (engine.currentScene.actors.filter((actor) => actor.name === "Person")[0]) {
-      this.nearNPC = this.within(engine.currentScene.actors.filter((actor) => actor.name === "Person")[0], 1);
-    }
-  }
-
-  onCollisionStart(self: ex.Collider, other: ex.Collider, side: ex.Side, contact: ex.CollisionContact): void {
-    //console.log(other);
-    if (other.owner.name === "Taco") {
-      //window.alert("taco collected");
-      incrementTacoCounter();
-      other.owner.kill();
-    }
-
-  }
-
-  onCollisionEnd(self: ex.Collider, other: ex.Collider, side: ex.Side, lastContact: ex.CollisionContact): void {
   }
 }

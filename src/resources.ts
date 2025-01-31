@@ -1,6 +1,7 @@
 import { ImageFiltering, ImageSource, Loader } from "excalibur";
 
 import heroPath from './assets/maps/conjurer.png?url'
+import personPath from './assets/maps/person.png?url'
 import tmxPath from './assets/maps/grass_level.tmx?url';
 import tmxPath2 from './assets/maps/snow_level.tmx?url';
 import tilesetPath from './assets/maps/tiles.png?url';
@@ -10,16 +11,22 @@ import { TiledResource } from "@excaliburjs/plugin-tiled";
 import { Player } from "./player";
 import { Taco } from "./taco";
 import { ScenePortal } from "./scene-portal";
+import { Person } from "./person";
 
 // It is convenient to put your resources in one place
 export const Resources = {
-  TacoPng: new ImageSource(tacoPngPath) ,
+  TacoPng: new ImageSource(tacoPngPath),
   HeroSpriteSheetPng: new ImageSource(heroPath, false, ImageFiltering.Pixel),
+  PersonSpriteSheetPng: new ImageSource(personPath, false, ImageFiltering.Pixel),
   Level1: new TiledResource(tmxPath, {
     entityClassNameFactories: {
       player: (props) => {
         const player = new Player(props.worldPos);
         return player;
+      },
+      person: (props) => {
+        const person = new Person(props.worldPos);
+        return person;
       },
       taco: (props) => {
         const taco = new Taco(props.worldPos);
